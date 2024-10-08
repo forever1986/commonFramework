@@ -29,3 +29,27 @@ spring:
           refresh: true
           namespace: manage-biz
           group: ${spring.profiles.active}
+      discovery:
+        server-addr: 127.0.0.1:8848
+        username: nacos
+        password: nacos
+
+# openfeign的相关配置
+feign:
+  # 开启OKHttp功能
+  okhttp:
+    enabled: true
+  # 开启hystrix熔断
+  hystrix:
+    enabled: true
+  client:
+    config:
+      default:
+        #连接超时时间，默认2s
+        connect-timeout: 5000
+        #请求处理超时时间，默认5s
+        read-timeout: 10000
+
+logging:
+  level:
+    com.demo.client: debug

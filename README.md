@@ -3,6 +3,7 @@
 **auth-github**：是一个基于oauth2使用github进行第三方授权认证登录  
 **auth-security**：是一个基于spring-security框架集成的登录认证  
 **auth-resource**：是一个基于oauth2的资源服务器
+**business-biz**：只是为了配合openfeign示例(manage-biz-api)，设置的第三方服务接口
 **common**：是一个集合多种工具的模块，工具包括：   
 &ensp;&ensp;1）**common-log**：是一个日志拦截器公共包，基于AOP+注解方式，其它项目可以引入并使用，自动在controller方法调用之前打印参数日志（当然也可以配置其它方法）；  
 其中@SysLog是一个注解，主要是为了方便设置方法在日志打印的属性（可以根据项目调整）  
@@ -12,6 +13,7 @@
 **gateway**：微服务的网关，配置nacos实现动态配置网关功能  
 **IoT**：是一个访问EMQX的MQTT broker范例  
 **manage-biz**：是一个模拟业务的范例，里面实现了多环境配置（nacos）、国际化、日志logback、swagger、junit单元测试、数据库；引用common-log、common-mybatis、common-swagger等。  
+**manage-biz-api**：是一个抽离出来的访问第三方接口，使用openfeign进行访问（这是实践中常用的范例）
 
 # 2.多模块配置
 现在spring-boot支持多模块，在比较大的项目中，多模块可以统一引用、解耦、解决代码重复问题。  

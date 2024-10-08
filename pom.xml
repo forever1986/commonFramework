@@ -17,6 +17,8 @@
         <module>auth-security</module>
         <module>auth-resource</module>
         <module>auth-authentication</module>
+        <module>manage-biz-api</module>
+        <module>business-biz</module>
     </modules>
 
     <properties>

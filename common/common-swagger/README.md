@@ -18,6 +18,6 @@
     <optional>true</optional>
 </dependency>
 ```
-2.配置SwaggerConfiguration，其中配置@EnableSwagger2
-3.@Profile({"dev","test"})是根据环境配置
-4.controller层要暴露到swagger中，只需要增加@ApiOperation(value = "测试echo")即可
+2.配置SwaggerConfiguration，其中配置@EnableSwagger2  
+3.@Profile({"dev","test"})是根据环境配置  
+4.controller层要暴露到swagger中，只需要增加@ApiOperation(value = "测试echo")即可  

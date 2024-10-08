@@ -1,5 +1,7 @@
 package com.demo.manage.biz.controller;
 
+import com.demo.client.BusinessByServiceNameFeignClient;
+import com.demo.client.BusinessFeignClient;
 import com.demo.common.log.enums.ModuleTypeEnum;
 import com.demo.common.log.aspect.SysLog;
 import com.demo.manage.biz.constant.NacosValueConstant;
@@ -22,6 +24,12 @@ public class DemoController {
     @Autowired
     private NacosValueConstant nacosValueConstant;
 
+    @Autowired
+    private BusinessFeignClient businessFeignClient;
+
+    @Autowired
+    private BusinessByServiceNameFeignClient businessByServiceNameFeignClient;
+
     @SysLog(module= ModuleTypeEnum.MANAGE, description="测试echo")
     @ApiOperation(value = "测试echo")
     @GetMapping("/echo")
@@ -30,5 +38,20 @@ public class DemoController {
         log.info(nacosValueConstant.getValue());
         log.info(nacosValueConstant.getTest());
         return demoService.echo(echo);
+    }
+
+
+    @SysLog(module= ModuleTypeEnum.MANAGE, description="测试openfeign")
+    @ApiOperation(value = "测试openfeign")
+    @GetMapping("/remote/business")
+    public String remoteBusiness() {
+        return businessFeignClient.business();
+    }
+
+    @SysLog(module= ModuleTypeEnum.MANAGE, description="测试openfeign访问服务名")
+    @ApiOperation(value = "测试openfeign访问服务名")
+    @GetMapping("/remote/businessbyservicename")
+    public String remoteBusinessByServiceName() {
+        return businessByServiceNameFeignClient.business();
     }
 }
