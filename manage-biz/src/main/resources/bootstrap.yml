@@ -1,0 +1,31 @@
+server:
+  port: 9981
+spring:
+
+  # 应用名称
+  application:
+    name: cloud-manage-biz-service
+
+  # 激活环境
+  profiles:
+    active: dev
+
+  # 配置国际化
+  messages:
+    basename: i18n/messages
+
+  # nacos配置
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        namespace: manage-biz
+        group: ${spring.profiles.active}
+        file-extension: yaml
+        username: manage-biz
+        password: manage-biz
+        shared-configs[0]:
+          data-id: common.yaml
+          refresh: true
+          namespace: manage-biz
+          group: ${spring.profiles.active}

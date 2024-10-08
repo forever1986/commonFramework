@@ -1,0 +1,18 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: auth-resource-service
+
+security:
+  oauth2:
+    client:
+      #基操
+      client-id: client-lq
+      client-secret: secret-lq
+    resource:
+      #因为资源服务器得验证你的Token是否有访问此资源的权限以及用户信息，所以只需要一个验证地址
+      token-info-uri: http://localhost:8080/oauth/check_token
+      id: auth-resource1
+
+

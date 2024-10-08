@@ -1,0 +1,35 @@
+[
+  {
+    "id": "baidu",
+    "order": 0,
+    "predicates": [{
+      "args": {
+        "pattern": "/baidu/**"
+      },
+      "name": "Path"
+    }],
+    "uri": "http://www.baidu.com",
+    "filters": [{
+      "args": {
+        "_genkey_0": "2"
+      },
+      "name": "StripPrefix"
+    }]
+  },
+  {
+    "id": "manager",
+    "predicates": [{
+      "args": {
+        "pattern": "/manager/**"
+      },
+      "name": "Path"
+    }],
+    "uri": "http://localhost:9981",
+    "filters": [{
+      "args": {
+        "_genkey_0": "1"
+      },
+      "name": "StripPrefix"
+    }]
+  }
+]

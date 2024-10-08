@@ -1,0 +1,69 @@
+# 1.脚手架
+**auth-authentication**：是一个最简单oauth2+spring security的授权服务器  
+**auth-github**：是一个基于oauth2使用github进行第三方授权认证登录  
+**auth-security**：是一个基于spring-security框架集成的登录认证  
+**auth-resource**：是一个基于oauth2的资源服务器
+**common**：是一个集合多种工具的模块，工具包括：   
+&ensp;&ensp;1）**common-log**：是一个日志拦截器公共包，基于AOP+注解方式，其它项目可以引入并使用，自动在controller方法调用之前打印参数日志（当然也可以配置其它方法）；  
+其中@SysLog是一个注解，主要是为了方便设置方法在日志打印的属性（可以根据项目调整）  
+&ensp;&ensp;2）**common-mybatis**：是一个集成mysql+mybatis-plus的公共包，里面配置了mybatis-plus的多租户插件、分页插件、防止全表更新与删除插件。
+其中通过配置ignoreTables或者在mapper中配置注解@InterceptorIgnore(tenantLine = "true")则可以忽略多住户    
+&ensp;&ensp;3）**common-swagger**：是一个集成swagger配置的公共包，里面配置swagger以及环境生效等内容  
+**gateway**：微服务的网关，配置nacos实现动态配置网关功能  
+**IoT**：是一个访问EMQX的MQTT broker范例  
+**manage-biz**：是一个模拟业务的范例，里面实现了多环境配置（nacos）、国际化、日志logback、swagger、junit单元测试、数据库；引用common-log、common-mybatis、common-swagger等。  
+
+# 2.多模块配置
+现在spring-boot支持多模块，在比较大的项目中，多模块可以统一引用、解耦、解决代码重复问题。  
+配置多模块时，有几个点需要注意
+## 一、spring-boot和spring-cloud
+spring-boot-starter和spring-boot-dependencies，spring-boot-starter是继承spring-boot-dependencies,也就是说2者功能一样。
+一般spring-boot-starter是在parent标签中使用，项目只能继承1个parent，所以如果项目已经有parent，
+那么只能使用spring-boot-dependencies(注意：spring-boot-dependencies只能在dependencyManagement中引用)
+
+spring cloud情况也和spring-boot一样
+
+## 二、Maven pom文件
+1. dependencyManagement标签：用于定义引入依赖的版本号，一般用于父项目，在父项目中统一项目中所有的依赖版本
+2. Maven根据不同阶段做不同时期，不同阶段有对应的plugin。其中重要的有clean、package、install
+3. 不同plugin有不同功能，spring-boot-maven-plugin是spring-boot为了能够打出直接运行的jar实现的
+4. install可以将项目打成jar包，放入本地仓库，其它依赖于它的代码才可以做package
+
+# 3.其它功能
+
+## 3.1 多环境情况（nacos方案）
+详情见manage-biz项目
+
+## 3.2 Slf4j+logback+AOP集成统一日志
+详情见manage-biz项目+common-log项目
+
+## 3.3 Swagger2集成
+详情见manage-swagger项目
+
+## 3.4 spring-boot的mysql使用druid连接池
+详情见manage-biz项目+common-mybatis项目
+
+## 3.5 JUnit测试用例集成
+详情见manage-biz项目
+
+## 3.6 HandlerInterceptor拦截器统一入口认证
+详情见manage-biz项目
+
+## 3.7 国际化
+详情见manage-biz项目
+
+## 3.8 spring security集成（用户和权限控制）
+详情见auth-security项目
+
+## 3.9 oauth2（统一登录）
+### oauth2授权服务器
+详情见auth-authentication项目
+
+### oauth2资源服务器
+详情见auth-resource项目
+
+### oauth2客户端
+详情见auth-gihub模块
+
+## 3.10 gateway集成nacos实现动态路由
+详情见gateway项目

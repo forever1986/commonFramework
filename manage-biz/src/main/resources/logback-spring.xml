@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<configuration>
+
+    <!-- logback-spring加载早于application.yml，如果直接通过${参数key}的形式是无法获取到对应的参数值-->
+    <!-- source指定的是application.yml配置文件中key，其它地方直接用${log.path}引用这个值 -->
+    <!-- 解决在相对路径下生成log.path_IS_UNDEFINED的问题，增加defaultValue -->
+    <springProperty scope="context" name="base.path" source="logging.file.path" defaultValue="${user.home}/logs"/>
+
+    <!-- app.name根据你的应用名称修改 -->
+    <springProperty scope="context" name="app.name" source="spring.application.name" defaultValue="applog"/>
+
+    <property name="log.path" value="${base.path}/${app.name}"/>
+
+    <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度,%msg：日志消息，%n是换行符-->
+    <property name="log.pattern"
+              value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%property{app.name}] %X [%thread] %-5level %logger{36} -%msg%n"/>
+
+    <!-- 控制台日志输出配置 -->
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 文件输出日志配置，按照每天生成日志文件 -->
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 日志文件输出的文件名称 -->
+            <FileNamePattern>${log.path}-%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+            <!-- 日志保留天数 -->
+            <MaxHistory>30</MaxHistory>
+            <MaxFileSize>3MB</MaxFileSize>
+            <TotalSizeCap>500MB</TotalSizeCap>
+            <CleanHistoryOnStart>true</CleanHistoryOnStart>
+        </rollingPolicy>
+
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="stdout"/>
+        <appender-ref ref="file"/>
+    </root>
+
+    <!-- mybatis日志配置 -->
+    <logger name="java.sql.Connection" level="DEBUG"/>
+    <logger name="java.sql.Statement" level="DEBUG"/>
+    <logger name="java.sql.PreparedStatement" level="DEBUG"/>
+    <logger name="org.mongodb.driver.connection" level="WARN"/>
+    <logger name="org.springframework.data.mongodb.core.MongoTemplate" level="DEBUG"/>
+
+</configuration>

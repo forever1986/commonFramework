@@ -1,0 +1,8 @@
+# 项目端口号
+server:
+  port: 8080
+#  GitHub认证相关参数
+github:
+  client:
+    id: Ov23lieHZK20mdlGlbUy
+    secret: 1ae56f889a917baf2f5671ba591577d68f7698b2
