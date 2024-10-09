@@ -16,6 +16,8 @@
         <module>common-log</module>
         <module>common-mybatis</module>
         <module>common-swagger</module>
+        <module>common-exception</module>
+        <module>common-core</module>
     </modules>
 
 </project>

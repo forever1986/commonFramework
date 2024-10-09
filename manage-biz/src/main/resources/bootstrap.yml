@@ -31,8 +31,9 @@ spring:
           group: ${spring.profiles.active}
       discovery:
         server-addr: 127.0.0.1:8848
-        username: nacos
-        password: nacos
+        namespace: manage-biz
+        username: manage-biz
+        password: manage-biz
 
 # openfeign的相关配置
 feign:

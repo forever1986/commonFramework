@@ -1,17 +1,17 @@
 package com.demo.client.fallback;
 
-import com.demo.client.BusinessFeignClient;
+import com.demo.client.BusinessByServiceNameFeignClient;
 import com.demo.common.core.result.Result;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BusinessFallbackFactory implements FallbackFactory<BusinessFeignClient> {
+public class BusinessByServiceNameFallbackFactory implements FallbackFactory<BusinessByServiceNameFeignClient> {
 
 
     @Override
-    public BusinessFeignClient create(Throwable throwable) {
-        return new BusinessFeignClient() {
+    public BusinessByServiceNameFeignClient create(Throwable throwable) {
+        return new BusinessByServiceNameFeignClient() {
 
             @Override
             public Result<String> business() {

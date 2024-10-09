@@ -33,6 +33,11 @@
         </dependency>
         <dependency>
             <groupId>org.example</groupId>
+            <artifactId>common-exception</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.example</groupId>
             <artifactId>manage-biz-api</artifactId>
             <version>${project.version}</version>
         </dependency>

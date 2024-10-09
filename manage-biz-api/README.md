@@ -8,7 +8,30 @@
 
 # 2.操作实践
 本次实操是通过manage-biz调用business-biz服务的business接口（新建business-biz只是定义一个普通的接口）
-![img.png](readme-img/openfeign.png)
+![img.png](readme-img/openfeign.png)  
+## 2.1 新建business-biz服务
+1）新建子模块business-biz，配置pom
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+</dependency>
+```
+2）配置yaml文件
+```yaml
+server:
+  port: 9982
+spring:
+  application:
+    name: business-biz-service
+
+```
+3）新建一个controller接口BusinessController
+## 2.2 新建manage-biz-api
 1）新建manage-biz-api子模块，在pom配置中引入：(**注意**：如果引入loadbalancer负载均衡，则需要排除ribbon.你也可以在yml文件中配置不启用ribbon)
 ```xml
 <!--openFeign-->
@@ -31,8 +54,10 @@
 ```
 2）在manage-biz-api子模块上，定义一个与business接口一致的feign客户端BusinessFeignClient  
 3）在manage-biz-api子模块上，定义一个错误回调方法BusinessFallbackFactory，用于如果business-biz服务的business接口无法提供服务时的处理机制  
-4）在manage-biz子模块上，pom文件引入manage-biz-api子模块  
-5）在manage-biz子模块上，启动类ManageApplication引入注解@EnableFeignClients(basePackages = {"com.demo.client"})，里面声明feign包地址
+4）在spring.factories上面注册BusinessFallbackFactory
+## 2.3 manage-biz子模块调用openfeign
+1）在manage-biz子模块上，pom文件引入manage-biz-api子模块  
+2）在manage-biz子模块上，启动类ManageApplication引入注解@EnableFeignClients(basePackages = {"com.demo.client"})，里面声明feign包地址
 
 # 3.使用服务注册方式调用
 如果采用服务注册方式调用（也就是不通过ip地址），那么就需要使用微服务那一套，其实就是将服务注册到注册中心）
@@ -54,9 +79,11 @@ spring:
   # nacos配置
   cloud:
     nacos:
-      server-addr: 127.0.0.1:8848 # nacos地址
-      username: nacos
-      password: nacos
+      discovery:
+        server-addr: 127.0.0.1:8848 # nacos地址
+        namespace: manage-biz
+        username: manage-biz
+        password: manage-biz
 
 ```
 3）启动business-biz服务，在nacos的服务列表中，可看见business-biz-service服务
@@ -81,8 +108,9 @@ spring:
         password: nacos
 ```
 ## 3.3 manage-biz-api增加通过服务名称访问的接口
-1）新增BusinessByServiceNameFeignClient，注意里面的配置是通过服务名
-2）在manage-biz子模块的DemoController上面增加一个通过服务名称访问的接口
+1）新增BusinessByServiceNameFeignClient和回调类BusinessByServiceNameFallbackFactory，注意里面的配置是通过服务名  
+2）在spring.factories中注入BusinessByServiceNameFallbackFactory类  
+3）在manage-biz子模块的DemoController上面增加一个通过服务名称访问的接口
 ```java
 @SysLog(module= ModuleTypeEnum.MANAGE, description="测试openfeign访问服务名")
 @ApiOperation(value = "测试openfeign访问服务名")

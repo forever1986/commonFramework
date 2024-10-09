@@ -2,6 +2,9 @@ package com.demo.manage.biz.controller;
 
 import com.demo.client.BusinessByServiceNameFeignClient;
 import com.demo.client.BusinessFeignClient;
+import com.demo.common.core.result.Result;
+import com.demo.common.core.result.ResultCode;
+import com.demo.common.exception.BizException;
 import com.demo.common.log.enums.ModuleTypeEnum;
 import com.demo.common.log.aspect.SysLog;
 import com.demo.manage.biz.constant.NacosValueConstant;
@@ -33,25 +36,36 @@ public class DemoController {
     @SysLog(module= ModuleTypeEnum.MANAGE, description="测试echo")
     @ApiOperation(value = "测试echo")
     @GetMapping("/echo")
-    public String echo(@RequestParam String echo) {
+    public Result<String> echo(@RequestParam String echo) {
         log.info("echo======================"+echo);
         log.info(nacosValueConstant.getValue());
         log.info(nacosValueConstant.getTest());
-        return demoService.echo(echo);
+        return Result.success(demoService.echo(echo));
     }
 
 
     @SysLog(module= ModuleTypeEnum.MANAGE, description="测试openfeign")
     @ApiOperation(value = "测试openfeign")
     @GetMapping("/remote/business")
-    public String remoteBusiness() {
+    public Result<String> remoteBusiness() {
         return businessFeignClient.business();
     }
 
     @SysLog(module= ModuleTypeEnum.MANAGE, description="测试openfeign访问服务名")
     @ApiOperation(value = "测试openfeign访问服务名")
     @GetMapping("/remote/businessbyservicename")
-    public String remoteBusinessByServiceName() {
+    public Result<String> remoteBusinessByServiceName() {
         return businessByServiceNameFeignClient.business();
+    }
+
+    @SysLog(module= ModuleTypeEnum.MANAGE, description="测试全局异常处理")
+    @ApiOperation(value = "测试全局异常处理")
+    @GetMapping("/testexception")
+    public Result<String> testException(Boolean isNotNull) {
+        log.info("call testException");
+        if(isNotNull==null || !isNotNull){
+            throw new BizException(ResultCode.PARAM_IS_NULL);
+        }
+        return Result.success("ok");
     }
 }

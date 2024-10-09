@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.demo.client.fallback.BusinessFallbackFactory
+  com.demo.client.fallback.BusinessFallbackFactory,\
+  com.demo.client.fallback.BusinessByServiceNameFallbackFactory

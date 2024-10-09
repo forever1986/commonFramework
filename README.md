@@ -2,8 +2,8 @@
 **auth-authentication**：是一个最简单oauth2+spring security的授权服务器  
 **auth-github**：是一个基于oauth2使用github进行第三方授权认证登录  
 **auth-security**：是一个基于spring-security框架集成的登录认证  
-**auth-resource**：是一个基于oauth2的资源服务器
-**business-biz**：只是为了配合openfeign示例(manage-biz-api)，设置的第三方服务接口
+**auth-resource**：是一个基于oauth2的资源服务器  
+**business-biz**：只是为了配合openfeign示例(manage-biz-api)，设置的第三方服务接口  
 **common**：是一个集合多种工具的模块，工具包括：   
 &ensp;&ensp;1）**common-log**：是一个日志拦截器公共包，基于AOP+注解方式，其它项目可以引入并使用，自动在controller方法调用之前打印参数日志（当然也可以配置其它方法）；  
 其中@SysLog是一个注解，主要是为了方便设置方法在日志打印的属性（可以根据项目调整）  

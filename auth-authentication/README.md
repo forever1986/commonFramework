@@ -173,13 +173,24 @@ AuthenticationProvider：身份认证是由AuthenticationProvider实现的，所
 请求token演示如下：
 ![img.png](readme-img/phonecode.png)
 
-## 7.与JWT集成（同时使用RSA加密）
+## 7.重写/oauth/token方法
+在某些情况下，可能需要做些判断或者返回值需要做一些改动，可以重新oauth/token方法
+```java
+@PostMapping("/token")
+public com.demo.common.exception.Result<OAuth2AccessToken> postAccessToken(Principal principal, @RequestParam Map<String, String> parameters) throws HttpRequestMethodNotSupportedException {
+    log.info("login params={}", JSONObject.toJSONString(parameters));
+    return loginService.getAccessToken(principal,parameters);
+}
+```
+> 注意：方法的定义参照oauth本身的/oauth/token方法。
+
+## 8.与JWT集成（同时使用RSA加密）
 1）JWT是一个token生成方式，包括三部分：头部、body、签名。其中body是返回数据（以base64编码），签名是作为认证的。（在auth-security中也使用过）  
 2）使用RSA非对称加密对签名进行加密，授权服务器通过私钥加密，资源管理器（也可以是网关）通过公钥解密，这样就能达到签名无法伪造，同时资源管理器验证token不用每次都调用授权服务器  
 3）使用RSA加密，需要生成密钥（包括公钥和私钥），以下是生成密钥方法
 > ①生成jks
 > keytool -genkeypair -alias demo -keyalg RSA -keypass linmoo -storepass linmoo -keysize 2048 -keystore demo.jks  
-> 这时候会在目录下生成一个demo.jks文件，该文件包括私钥和公钥 。该文件拷贝到项目resources文件下面，供签名使用 
+> 这时候会在目录下生成一个demo.jks文件，该文件包括私钥和公钥 。该文件拷贝到项目resources文件下面，供签名使用
 > ![img.png](readme-img/生成RAS密钥.png)
 > ②keytool -list -rfc --keystore demo.jks | openssl x509 -inform pem -pubkey
 > ![img.png](readme-img/获得公钥.png)
@@ -188,16 +199,11 @@ AuthenticationProvider：身份认证是由AuthenticationProvider实现的，所
 1）配置AccessTokenConfig，配置token生成类（使用JwtAccessTokenConverter）  
 2）配置CustomAdditionalInformation，主要是在token的body中增加所需内容，用于前端或者接口可以使用  
 3）在AuthorizationServerConfigurerAdapter中增加tokenServices()方法，将AccessTokenConfig和CustomAdditionalInformation注入  
-4）在configure(AuthorizationServerEndpointsConfigurer endpoints)方法中注入tokenServices()  
+4）在configure(AuthorizationServerEndpointsConfigurer endpoints)方法中注入tokenServices()
 > 注意：这个时候还保留security的登录，因为在授权码模式下，还是需要先登录，在获得授权码
 
-## 8.重写/oauth/token方法
-在某些情况下，可能需要做些判断或者返回值需要做一些改动，可以重新oauth/token方法
-```java
-@PostMapping("/token")
-public Result<OAuth2AccessToken> postAccessToken(Principal principal, @RequestParam Map<String, String> parameters) throws HttpRequestMethodNotSupportedException {
-    log.info("login params={}", JSONObject.toJSONString(parameters));
-    return loginService.getAccessToken(principal,parameters);
-}
-```
-> 注意：方法的定义参照oauth本身的/oauth/token方法。
+## 9.资源服务器鉴权的2种模式
+### 9.1 基于check_token接口模式
+参考auth-resource子模块，通过yaml文件配置授权服务器的check_token接口，确认token有效性
+### 9.2 基于JWT+RSA加密模式
+参考gateway子模块，结合JWT+RSA通过对token的签名加密和解密确认token有效性（这样可以减少授权服务器访问）

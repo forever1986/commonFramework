@@ -2,6 +2,7 @@ package com.demo.client;
 
 import com.demo.client.constant.FeignClientConstant;
 import com.demo.client.fallback.BusinessFallbackFactory;
+import com.demo.common.core.result.Result;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -9,6 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public interface BusinessFeignClient {
 
     @GetMapping("/business")
-    String business();
+    Result<String> business();
 
 }
