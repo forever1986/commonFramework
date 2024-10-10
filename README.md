@@ -5,11 +5,13 @@
 **auth-resource**：是一个基于oauth2的资源服务器  
 **business-biz**：只是为了配合openfeign示例(manage-biz-api)，设置的第三方服务接口  
 **common**：是一个集合多种工具的模块，工具包括：   
-&ensp;&ensp;1）**common-log**：是一个日志拦截器公共包，基于AOP+注解方式，其它项目可以引入并使用，自动在controller方法调用之前打印参数日志（当然也可以配置其它方法）；  
+&ensp;&ensp;1）**common-core**：是一个公共包，主要定义常量使用，包括普通常量、异常常量。  
+&ensp;&ensp;2）**common-exception**：是一个异常拦截器公共包，基于@RestControllerAdvice注解，定义各种异常处理器，避免给接口抛出异常；  
+&ensp;&ensp;3）**common-log**：是一个日志拦截器公共包，基于AOP+注解方式，其它项目可以引入并使用，自动在controller方法调用之前打印参数日志（当然也可以配置其它方法）；  
 其中@SysLog是一个注解，主要是为了方便设置方法在日志打印的属性（可以根据项目调整）  
-&ensp;&ensp;2）**common-mybatis**：是一个集成mysql+mybatis-plus的公共包，里面配置了mybatis-plus的多租户插件、分页插件、防止全表更新与删除插件。
+&ensp;&ensp;4）**common-mybatis**：是一个集成mysql+mybatis-plus的公共包，里面配置了mybatis-plus的多租户插件、分页插件、防止全表更新与删除插件。
 其中通过配置ignoreTables或者在mapper中配置注解@InterceptorIgnore(tenantLine = "true")则可以忽略多住户    
-&ensp;&ensp;3）**common-swagger**：是一个集成swagger配置的公共包，里面配置swagger以及环境生效等内容  
+&ensp;&ensp;5）**common-swagger**：是一个集成swagger配置的公共包，里面配置swagger以及环境生效等内容  
 **gateway**：微服务的网关，配置nacos实现动态配置网关功能  
 **IoT**：是一个访问EMQX的MQTT broker范例  
 **manage-biz**：是一个模拟业务的范例，里面实现了多环境配置（nacos）、国际化、日志logback、swagger、junit单元测试、数据库；引用common-log、common-mybatis、common-swagger等。  

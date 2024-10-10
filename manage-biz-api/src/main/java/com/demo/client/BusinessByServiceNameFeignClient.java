@@ -13,6 +13,4 @@ public interface BusinessByServiceNameFeignClient {
     @GetMapping("/business")
     Result<String> business();
 
-
-
 }

@@ -99,3 +99,43 @@ spring:
       filters: stat,wall,slf4j
       connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000;socketTimeout=10000;connectTimeout=1200
 ```
+
+## 八、Flyway集成
+我们的代码有git做版本管理，但是我们的sql脚本呢？尤其是各类ddl脚本并没有进行版本的管。当我们的项目从一个环境迁移到另一个或者dev、test各个环境部署，都需要先将脚本执行一遍这是极其不方便，而且也会经常遗漏。那么Flyway就派上用场。  
+Flyway一个开源的数据库迁移工具，用于管理和执行数据库结构的版本变更。通俗来说，它帮助开发者跟踪和应用数据库中的更改，比如表的创建、列的修改等。主要的功能为：
+- 数据库版本控制
+- 自动迁移
+- 迁移历史管理
+
+1）在manage-biz子模块中引入依赖（注意这里没有版本号，是因为在父项目commonFramework中已经引入）
+```xml
+<dependency>
+    <groupId>org.flywaydb</groupId>
+    <artifactId>flyway-core</artifactId>
+</dependency>
+```
+
+2）yaml文件配置  
+数据库配置原先已经存在nacos的多环境配置中，因此不用再此配置。只需要配置flyway。
+> 注意：我们可以在nacos多环境的cloud-manage-biz-service分别dev、test、prod配置，因为不同环境要求可能不一样，**特别是生产环境，一定不要使用flyway方式执行**
+
+```yaml
+spring:
+  # 配置flyway（数据库sql版本控制）
+  flyway:
+    # 开关，建议在prod环境关闭
+    enabled: true
+    #数据库存在表时，自动使用设置的基线版本（baseline-version），数据库不存在表时，即使设置了，也会从第一个版本开始执行，默认值为false
+    baseline-on-migrate: true
+    #基线版本号，baseline-on-migrate为true时小于等于此版本号的脚本不会执行，默认值为1
+    baseline-version: 1.0.0
+    #设置为false会删除指定schema下所有的表，生产环境务必禁用，spring中该参数默认是false，需要手动设置为true
+    clean-disabled: true
+    #sql脚本存放位置，允许设置多个location，用英文逗号分割，默认值为classpath:db/migration
+    locations: classpath:db/migration
+    #是否替换sql脚本中的占位符，占位符默认是${xxx},默认是替换，如果不需要替换，可以设置为false
+    placeholder-replacement: false
+```
+3）在resources下面建立db/migration，写入sql文件
+> 注意：flyway的版本号命名规则，以V/U/R开头，后面接数字、点、下划线都可以，再接双下划线，再接描述。  
+> 比如：V1.0.1__init_test_table.sql，其中1.0.1是对应baseline-version: 1.0.0,init_test_table是描述

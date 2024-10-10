@@ -124,7 +124,7 @@ public String remoteBusinessByServiceName() {
 ## 4.1 负载均衡
 使用openfeign比较低的版本时，默认是使用ribbon作为负载均衡，但是ribbon已经不再维护，因此大多数情况下使用loadbalancer作为负载均衡。使用loadbalancer作为负载均衡有几个点需要注意
 1）如果你的spring cloud版本较高，则默认引入loadbalancer
-2）如果你的spring cloud版本较低（本案例就是默认引入ribbon的），那么你需要手动引入loadbalancer，同时还需要关闭或者排除ribbon
+2）如果你的spring cloud版本较低（本案例就是默认引入ribbon的），那么你需要手动引入loadbalancer，同时还需要排除ribbon组件或者在yaml文件中关闭ribbon
 ```xml
 <!--openFeign-->
 <dependency>
