@@ -8,6 +8,7 @@ import com.demo.common.exception.BizException;
 import com.demo.common.log.enums.ModuleTypeEnum;
 import com.demo.common.log.aspect.SysLog;
 import com.demo.manage.biz.constant.NacosValueConstant;
+import com.demo.manage.biz.constant.UserHolder;
 import com.demo.manage.biz.service.DemoService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +41,7 @@ public class DemoController {
         log.info("echo======================"+echo);
         log.info(nacosValueConstant.getValue());
         log.info(nacosValueConstant.getTest());
+        log.info(UserHolder.getTUser().getUsername());
         return Result.success(demoService.echo(echo));
     }
 

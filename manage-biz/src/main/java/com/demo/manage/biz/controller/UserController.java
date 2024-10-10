@@ -1,6 +1,7 @@
 package com.demo.manage.biz.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.demo.common.core.result.Result;
 import com.demo.manage.biz.entity.TUser;
 import com.demo.manage.biz.page.UserPageQuery;
 import com.demo.manage.biz.service.UserService;
@@ -22,16 +23,16 @@ public class UserController {
     @SysLog(module= ModuleTypeEnum.MANAGE, description="测试getUser")
     @ApiOperation(value = "测试数据库")
     @GetMapping("/getuser")
-    public TUser getTUserByUsername(@RequestParam String username){
-        return userService.getTUserByUsername(username);
+    public Result<TUser> getTUserByUsername(@RequestParam String username){
+        return Result.success(userService.getTUserByUsername(username));
     }
 
 
     @SysLog(module= ModuleTypeEnum.MANAGE, description="测试listUser")
     @ApiOperation(value = "测试数据库")
     @GetMapping("/listuser")
-    public IPage<TUser> listUser(@RequestBody UserPageQuery userPageQuery){
-        return userService.listTUser(userPageQuery);
+    public Result<IPage<TUser>> listUser(@RequestBody UserPageQuery userPageQuery){
+        return Result.success(userService.listTUser(userPageQuery));
     }
 
 }

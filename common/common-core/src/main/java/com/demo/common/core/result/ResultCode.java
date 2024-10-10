@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public enum ResultCode implements IResultCode, Serializable {
     SUCCESS("00000", "ok"),
-    USER_ERROR("A0001", "用户端错误"),
+    USER_ERROR("A0001", "用户信息为空"),
     PARAM_IS_NULL("A0410", "请求必填参数为空"),
     SYSTEM_EXECUTION_ERROR("B0001", "系统执行出错");
 

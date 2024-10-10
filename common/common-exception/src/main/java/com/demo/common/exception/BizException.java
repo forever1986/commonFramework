@@ -1,7 +1,6 @@
 package com.demo.common.exception;
 
 import com.demo.common.core.result.IResultCode;
-import com.demo.common.core.result.ResultCode;
 
 public class BizException extends RuntimeException{
 
