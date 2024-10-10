@@ -134,3 +134,60 @@ http.oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationCo
                 .publicKey(rsaPublicKey())
         ;
 ```
+# 5 高级功能
+## 5.1 负载均衡
+如果配置微服务的服务名方式（lb://开头），则会自动使用负载均衡。gateway默认**LoadBalancerClientFilter**，基于Ribbon的阻塞式负载均衡。spring cloud推荐我们采用**ReactiveLoadBalancerClientFilter**，也就是基于loadbalancer的非阻塞性负载均衡。
+下面以开启ReactiveLoadBalancerClientFilter。  
+1）在项目中引入loadbalancer组件
+```xml
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+</dependency>
+```
+2）在yaml文件中关闭ribbon负载均衡
+```yaml
+spring:
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+```
+## 5.2 集成actuator
+actuator是一个程序监控器，可以采集多种数据，集成Prometheus格式发布。可以将服务的访问情况采集到ELK中，再做分析  
+1）在pom文件引入以下依赖
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+<dependency>
+    <groupId>io.micrometer</groupId>
+    <artifactId>micrometer-registry-prometheus</artifactId>
+</dependency>
+```
+2）yaml文件中对actuator做配置
+```yaml
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    enabled-by-default: false
+    web:
+      exposure:
+        include: '*'
+  metrics:
+    distribution:
+      slo:
+        http:
+          server:
+            requests: 1ms,5ms,10ms,50ms,100ms,200ms,500ms,1s,5s
+    tags:
+      application: ${spring.application.name}
+```
+3）通过http://localhost:8891/actuator访问获得各个接口
+> 注意：actuator其实会暴露很多数据，比如env、/gateway/routes等，其实是非常危险的，因此我们需要从几个方面对其控制：  
+> ① 通过yaml配置屏蔽一些不必要的：exclude: env,beans   #关掉不需要的端点  
+> ② 通过修改路径，避免被扫描  
+> ③ 增加权限认证，比如该gateway子模块就有权限认证  

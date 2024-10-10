@@ -37,6 +37,7 @@ public class ResourceServerManager implements ReactiveAuthorizationManager<Autho
             return Mono.just(new AuthorizationDecision(false));
         }
         log.info("判断权限");
+        // 可以实现自身的权限判断逻辑
         mono.filter(authentication -> {
             log.info("权限"+String.valueOf(authentication.isAuthenticated()));
             return authentication.isAuthenticated();

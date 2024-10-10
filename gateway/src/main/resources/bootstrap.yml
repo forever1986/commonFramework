@@ -3,6 +3,7 @@ server:
 spring:
   application:
     name: cloud-gateway-service
+
   cloud:
     nacos:
       discovery:
@@ -16,3 +17,24 @@ spring:
 #        file-extension: yaml
 #        group: DEFAULT_GROUP
 #        prefix: ${spring.application.name}
+    loadbalancer:
+      ribbon:
+        enabled: false
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    enabled-by-default: false
+    web:
+      exposure:
+        include: '*'
+  metrics:
+    distribution:
+      slo:
+        http:
+          server:
+            requests: 1ms,5ms,10ms,50ms,100ms,200ms,500ms,1s,5s
+    tags:
+      application: ${spring.application.name}
