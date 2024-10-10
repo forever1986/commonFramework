@@ -38,7 +38,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         // 解析token
         try {
             token = StrUtil.replaceIgnoreCase(token, "Bearer ", Strings.EMPTY);
-            log.info("user-->",token);
+            log.info("user-->"+token);
             String payload = StrUtil.toString(JWSObject.parse(token).getPayload());
             JSONObject jsonObject = JSONUtil.parseObj(payload);
             JSONObject userDetails = (JSONObject)jsonObject.get("userDetails");
