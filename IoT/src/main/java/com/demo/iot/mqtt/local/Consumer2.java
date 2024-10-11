@@ -9,9 +9,21 @@ import org.eclipse.paho.mqttv5.common.packet.MqttProperties;
 public class Consumer2 {
 
     private static final String BROKER_URL = "tcp://192.168.2.201:1883";
-    private static final String TOPIC = "demo/lin/data";
+    /**
+     * 注意：多个客户端同时共享订阅一个主题，有2种方式
+     * 1.$queue开头是采用不带群组的方式
+     * 2.$share/g1开头是带群组的方式。
+     * 实践的关键的参数设置
+     * 1）服务器配置：broker.shared_dispatch_ack_enabled = true，代表如果客户端断开连接，则消息会分到其它服务器（只支持QOS1、QOS2）
+     * 2）options.setSessionExpiryInterval(8640L);，代表客户端断开连接，服务器会保存未消费（保存条数有服务器配置）；客户端重新连接则会消费消息
+     * 3）按照1）和2）设置，那么在所有客户端奔溃的时候，新发的消息还是会保存在各个客户端队列中，客户端重启时，会继续消费保存在队列的消息。
+     * 4）但是有一个注意点，就是存在某个客户端的消息队列，只能这个消息队列的客户端来消费，无法转发到其它客户端
+     *
+     */
+    private static final String TOPIC = "$queue/demo/lin/data";
 
     private MqttClient consumerClient2;
+    private MqttConnectionOptions options;
 
     public static void main(String[] args) {
         Consumer2 test = new Consumer2();
@@ -27,8 +39,9 @@ public class Consumer2 {
 
         try {
             // 设置连接选项
-            MqttConnectionOptions options = new MqttConnectionOptions();
+            options = new MqttConnectionOptions();
             options.setCleanStart(false);
+            options.setSessionExpiryInterval(8640L);
             // 连接到MQTT代理服务器
             consumerClient2.connect(options);
             // 创建回调接口
@@ -113,7 +126,7 @@ public class Consumer2 {
                     System.out.println("MQTT client is not connected, attempting to reconnect.");
                     // 尝试重新连接
                     try {
-                        consumerClient2.connect();
+                        consumerClient2.connect(options);
                     } catch (MqttException e) {
                         System.out.println("Failed to reconnect: " + e.getMessage());
                         // 可以选择在这里处理重连失败的情况，例如重试或退出
