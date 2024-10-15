@@ -15,8 +15,8 @@
 **gateway**：微服务的网关，配置nacos实现动态配置网关功能  
 **IoT**：是一个访问EMQX的MQTT broker范例  
 **manage-biz**：是一个模拟业务的范例，里面实现了多环境配置（nacos）、国际化、日志logback、swagger、junit单元测试、数据库；引用common-log、common-mybatis、common-swagger等。  
-**manage-biz-api**：是一个抽离出来的访问第三方接口，使用openfeign进行访问（这是实践中常用的范例）
-
+**manage-biz-api**：是一个抽离出来的访问第三方接口，使用openfeign进行访问（这是实践中常用的范例）  
+**seata-demo**：是一个分布式事务的demo工程
 # 2.多模块配置
 现在spring-boot支持多模块，在比较大的项目中，多模块可以统一引用、解耦、解决代码重复问题。  
 配置多模块时，有几个点需要注意

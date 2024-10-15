@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>seata-demo-xa</module>
+        <module>seata-demo-tcc</module>
     </modules>
 
     <properties>
@@ -58,6 +59,19 @@
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
+            <exclusions>
+                <!-- 排除掉seata-spring-boot-starter，因为cloud中引入版本过低 -->
+                <exclusion>
+                    <artifactId>seata-spring-boot-starter</artifactId>
+                    <groupId>io.seata</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- 重新引入高版本的seata-spring-boot-starter -->
+        <dependency>
+            <groupId>io.seata</groupId>
+            <artifactId>seata-spring-boot-starter</artifactId>
+            <version>1.8.0</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

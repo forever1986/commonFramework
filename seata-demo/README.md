@@ -155,8 +155,10 @@ seata:
       boss-thread-size: 1
 ```
 4）运行seata-server.bat
-## 2.3 项目实践
-### 2.2.1 创建库和表
+## 2.3 项目实践（XA事务）
+这里使用2个服务，一个订单，一个库存，创建订单时，调用库存服务。要么一起成功，要么一起失败，通过XA的事务回滚操作
+![img.png](readme-img/xa事务流程.png)
+### 2.3.1 创建库和表
 1）为订单子模块创建seata_ticket数据库，并创建ticket_order表，以及seata的undo_log（虽然XA不需要undo_log表）
 ```roomsql
 CREATE TABLE seata_ticket.ticket_order (
@@ -185,11 +187,9 @@ COMMENT='订票库存';
 
 INSERT INTO `ticket_stock`(good, stock) VALUES ('故宫门票', 10);
 ```
-> **注意**：  
-> 1）ticket_stock的stock（库存）字段是UNSIGNED格式，就是为了让库存不能小于0，可以爆出异常  
-> 2）undo_log表是seata的AT模式下使用，这里创建只是因为客户端启动会去寻找这个表（如果不行建立这个表，有另外一种方式，就是客户端引入pom文件spring-cloud-starter-alibaba-seata排除io.seata，引入seata-spring-boot-starter的io.seata）
+> **注意**：ticket_stock的stock（库存）字段是UNSIGNED格式，就是为了让库存不能小于0，可以爆出异常  
 
-### 2.2.2 创建项目
+### 2.3.2 创建项目
 1）创建seata-demo子模块，在pom文件引入依赖：
 ```xml
 <dependency>
@@ -229,19 +229,88 @@ INSERT INTO `ticket_stock`(good, stock) VALUES ('故宫门票', 10);
 <dependency>
     <groupId>com.alibaba.cloud</groupId>
     <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
+    <exclusions>
+        <!-- 排除掉seata-spring-boot-starter，因为cloud中引入版本过低 -->
+        <exclusion>
+            <artifactId>seata-spring-boot-starter</artifactId>
+            <groupId>io.seata</groupId>
+        </exclusion>
+    </exclusions>
+</dependency>
+<!-- 重新引入高版本的seata-spring-boot-starter -->
+<dependency>
+    <groupId>io.seata</groupId>
+    <artifactId>seata-spring-boot-starter</artifactId>
+    <version>1.8.0</version>
 </dependency>
 <dependency>
     <groupId>org.projectlombok</groupId>
     <artifactId>lombok</artifactId>
 </dependency>
 ```
-2）创建库存子模块，stock-service子模块，在yaml文件中配置mysql、seata等配置。创建从mapper层到controller层，提供扣减和增加库存接口
+2）在seata-demo子模块下面创建xa子模块：seata-demo-xa
+2）在seata-demo-xa子模块下创建库存子模块，stock-service-xa子模块，在yaml文件中配置mysql、seata等配置。创建从mapper层到controller层，提供扣减和增加库存接口
 > 注意：连接的是ticket_stock数据库
 
-3）创建订单子模块，order-service子模块，在yaml文件中配置mysql、seata等配置。创建从mapper层到controller层，提供创建订单接口
+3）在seata-demo-xa子模块下创建订单子模块，order-service-xa子模块，在yaml文件中配置mysql、seata等配置。创建从mapper层到controller层，提供创建订单接口
 > 注意：连接的是seata_ticket数据库
 
-4）order-service子模块中的TicketOrderService的创建订单方法使用@GlobalTransactional注解  
+4）order-service-xa子模块中的TicketOrderService的创建订单方法使用@GlobalTransactional注解  
 5）通过调用创建订单接口，开始创建数量为6的订单，事务是成功的；再次创建数量为6的订单，报错回滚
 ![img.png](readme-img/调用接口.png)
 
+##  2.4 项目实践（TCC事务）
+同样，本项目也是使用订单服务和库存服务，创建订单服务，去扣取库存。这里将**扣取库存采用TCC方式实现**。TCC与XA最大不同就是通过编码的方式去实现回滚，不依赖于数据库的XA，因此具备更大的灵活度  
+> **注意**：TCC事务有3种子类型：通用类型、异步确保型、补偿型。本次案例使用通用型。
+![img.png](readme-img/tcc事务流程.png)
+### 2.4.1 创建库和表
+1）利用2.2中已经搭建好的seata-server服务器  
+2）利用2.3.1中的订单和库存数据库和表数据  
+3）分别在seata_ticket数据库和seata_stock数据库创建undo_log表
+```roomsql
+CREATE TABLE `undo_log` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `branch_id` bigint(20) NOT NULL,
+  `xid` varchar(100) NOT NULL,
+  `context` varchar(128) NOT NULL,
+  `rollback_info` longblob NOT NULL,
+  `log_status` int(11) NOT NULL,
+  `log_created` datetime NOT NULL,
+  `log_modified` datetime NOT NULL,
+  `ext` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ux_undo_log` (`xid`,`branch_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+```
+### 2.4.2 创建项目
+1）在seata-demo子模块下面创建seata-demo-tcc子模块(因为seata-demo已经引入依赖，因此seata-demo-tcc不需要再引入依赖)  
+2）在seata_stock数据库创建一张冻结表，用于解决和记录空回滚、幂等性和悬挂问题
+```roomsql
+CREATE TABLE seata_stock.ticket_stock_freeze (
+	`xid` varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '事务id',
+	`good` varchar(100) NOT NULL COMMENT '商品',
+	`freeze_stock` BIGINT UNSIGNED NOT NULL COMMENT '冻结库存',
+	`state` int(1) NULL DEFAULT NULL COMMENT '事务状态，1:try，0:cancel',
+	CONSTRAINT ticket_stock_pk PRIMARY KEY (xid)
+)
+ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_0900_ai_ci
+COMMENT='订票库存冻结表';
+```
+3）在seata-demo-tcc子模块创建order-service-tcc子模块，该子模块与2.3中的order-service-xa一致，order是发起者，无需改造  
+4）在seata-demo-tcc子模块创建stock-service-tcc子模块，该子模块与2.3中的stock-service-xa一致  
+5）在stock-service-tcc子模块中，新增TicketStockFreezeMapper用于操作冻结记录  
+6）在stock-service-tcc子模块中，重新TicketStockService，改名为TicketStockTccService
+> 注意：这个TicketStockTccService就是实现tcc的关键所在  
+> 1）该类使用注解@LocalTCC注释
+> 2）定义try、confirm、cancel3个方法  
+> 3）在其中的try方法增加注解@TwoPhaseBusinessAction，用于说明try、confirm、cancel3个方法  
+> 4）注意个别方法上面增加了@Transactional，是因为同时操作2张表
+> 5）注意其中如何处理“悬挂”、“空回滚”、“幂等性”问题
+
+7）在stock-service-tcc子模块中的yaml文件data-source-proxy-mode: XA，这个值目前只有XA和AT，如果你配置了@LocalTCC，那么无论你写入什么，都会以AT模式启动
+
+8）通过调用创建订单接口，开始创建数量为6的订单，事务是成功的；再次创建数量为6的订单，报错回滚
+![img.png](readme-img/调用接口.png)
