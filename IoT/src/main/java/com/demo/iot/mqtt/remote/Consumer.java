@@ -10,8 +10,11 @@ import java.nio.charset.StandardCharsets;
 
 public class Consumer {
 
-    private static final String BROKER_URL = "tcp://f75d1379.ala.dedicated.aliyun.emqxcloud.cn:1883";
+    private static final String BROKER_URL = "tcp://10.156.136.211:1883";
     private static final String TOPIC = "demo/lin/data";
+    private static final String USER_NAME = "";
+    private static final String PASSWORD = "";
+    MqttConnectionOptions options;
 
     private MqttClient consumerClient1;
 
@@ -29,10 +32,10 @@ public class Consumer {
 
         try {
             // 设置连接选项
-            MqttConnectionOptions options = new MqttConnectionOptions();
+            options = new MqttConnectionOptions();
             options.setCleanStart(false);
-            options.setUserName("linmoo");
-            options.setPassword("linmoo".getBytes(StandardCharsets.UTF_8));
+            options.setUserName(USER_NAME);
+            options.setPassword(PASSWORD.getBytes(StandardCharsets.UTF_8));
             options.setSessionExpiryInterval(60L);
             // 连接到MQTT代理服务器
             consumerClient1.connect(options);
@@ -118,11 +121,6 @@ public class Consumer {
                     System.out.println("MQTT client is not connected, attempting to reconnect.");
                     // 尝试重新连接
                     try {
-                        MqttConnectionOptions options = new MqttConnectionOptions();
-                        options.setCleanStart(false);
-                        options.setUserName("linmoo");
-                        options.setPassword("linmoo".getBytes(StandardCharsets.UTF_8));
-                        options.setSessionExpiryInterval(60L);
                         consumerClient1.connect(options);
                     } catch (MqttException e) {
                         System.out.println("Failed to reconnect: " + e.getMessage());

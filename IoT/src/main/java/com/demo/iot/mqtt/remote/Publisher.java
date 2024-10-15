@@ -11,8 +11,10 @@ import java.nio.charset.StandardCharsets;
 public class Publisher {
 
 
-    private static final String BROKER_URL = "tcp://f75d1379.ala.dedicated.aliyun.emqxcloud.cn:1883";
+    private static final String BROKER_URL = "tcp://10.156.136.211:1883";
     private static final String TOPIC = "demo/lin/data";
+    private static final String USER_NAME = "";
+    private static final String PASSWORD = "";
 
     private MqttClient publishClient;
     MemoryPersistence persistence = new MemoryPersistence();
@@ -33,8 +35,8 @@ public class Publisher {
             // 设置连接选项
             MqttConnectionOptions options = new MqttConnectionOptions();
             options.setCleanStart(false);
-            options.setUserName("linmoo");
-            options.setPassword("linmoo".getBytes(StandardCharsets.UTF_8));
+            options.setUserName(USER_NAME);
+            options.setPassword(PASSWORD.getBytes(StandardCharsets.UTF_8));
             // 连接到MQTT代理服务器
             publishClient.connect(options);
             // 创建回调接口
@@ -69,7 +71,7 @@ public class Publisher {
 
             // 设置回调
             publishClient.setCallback(callback);
-            String message = "{\"id\": 8 , \"name\": \"test8\"}";
+            String message = "{\"id\": 1 , \"name\": \"test1\"}";
             publishClient.publish(TOPIC, message.getBytes(StandardCharsets.UTF_8),1,false );
             publishClient.disconnect();
             publishClient.close(true);

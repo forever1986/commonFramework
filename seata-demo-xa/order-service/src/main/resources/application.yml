@@ -1,0 +1,45 @@
+server:
+  port: 9091
+spring:
+  application:
+    name: order-service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/seata_ticket?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+      namespace: "" #可以和Seata服务器一个命名空间，也可以不用一个命名空间
+      group: SEATA_GROUP #可以和Seata服务器一个分组，也可以不用一个分组
+      username: nacos
+      password: nacos
+
+seata:
+  registry:
+    type: nacos
+    nacos:
+      server-addr: 127.0.0.1:8848
+      # 空字符串表示使用 nacos 的默认 namespace（public）
+      namespace: ""
+      group: SEATA_GROUP
+      application: seata-server
+      username: nacos
+      password: nacos
+  tx-service-group: seata_demo # 事务分组，与下面vgroup-mapping匹配
+  service:
+    vgroup-mapping:
+      seata_demo: default  # 对应在seata中配置cluster的名称
+  # 这里配置 Seata 使用 XA 模式
+  data-source-proxy-mode: XA
+
+# openfeign的相关配置
+feign:
+  client:
+    config:
+      default:
+        #连接超时时间，默认2s
+        connect-timeout: 5000
+        #请求处理超时时间，默认5s
+        read-timeout: 10000
