@@ -19,7 +19,7 @@
         <module>auth-authentication</module>
         <module>manage-biz-api</module>
         <module>business-biz</module>
-        <module>seata-demo-xa</module>
+        <module>seata-demo</module>
     </modules>
 
     <properties>
