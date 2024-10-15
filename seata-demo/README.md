@@ -5,7 +5,7 @@
 ## 1.1 事务
 事务是一个具备ACID特性的操作，也就是你对数据库的一系列操作，要么一起成功，要么一起失败，特别是数据库操作。  
 **1）本地事务**：就是只操作同一个数据源（可以是数据库、消息队列等支持事务的数据源），这里很多数据源包括关系型数据库、消息队列、非关系型数据库都有支持本地事务的操作，而对于基于spring的代码开发，往往只需要在某个方法上面增加@Transactional注解即可  
-**2）分布式事务**：需要操作多个数据源，同时保证事务。无论是跨数据源或者跨服务，保证一系列操作具备ACID，那么代价往往是很大的，但是业务往往就有这要的需求
+**2）分布式事务**：需要操作多个数据源，同时保证事务。无论是跨数据源或者跨服务，保证一系列操作具备强一致性，那么代价往往是很大的，因此出现了弱一致性、最终一致性等解决方案，针对个别特殊的业务需求。
 ## 1.2 分布式事务
 在前人的不断努力执行，出现了各种各样的分布式事务类型，包括：XA、AT、TCC、SAGA等事务模式。每个模式都是为了解决一些特殊场景。下面说一下各种模式的不同：
 ### 1.2.1 XA（强一致性）
@@ -237,7 +237,7 @@ INSERT INTO `ticket_stock`(good, stock) VALUES ('故宫门票', 10);
         </exclusion>
     </exclusions>
 </dependency>
-<!-- 重新引入高版本的seata-spring-boot-starter -->
+<!-- 重新引入高版本的seata-spring-boot-starter,旧版本启动，即便不是AT模式，也需要有undo_log表 -->
 <dependency>
     <groupId>io.seata</groupId>
     <artifactId>seata-spring-boot-starter</artifactId>
@@ -266,23 +266,6 @@ INSERT INTO `ticket_stock`(good, stock) VALUES ('故宫门票', 10);
 ### 2.4.1 创建库和表
 1）利用2.2中已经搭建好的seata-server服务器  
 2）利用2.3.1中的订单和库存数据库和表数据  
-3）分别在seata_ticket数据库和seata_stock数据库创建undo_log表
-```roomsql
-CREATE TABLE `undo_log` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `branch_id` bigint(20) NOT NULL,
-  `xid` varchar(100) NOT NULL,
-  `context` varchar(128) NOT NULL,
-  `rollback_info` longblob NOT NULL,
-  `log_status` int(11) NOT NULL,
-  `log_created` datetime NOT NULL,
-  `log_modified` datetime NOT NULL,
-  `ext` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `ux_undo_log` (`xid`,`branch_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-
-```
 ### 2.4.2 创建项目
 1）在seata-demo子模块下面创建seata-demo-tcc子模块(因为seata-demo已经引入依赖，因此seata-demo-tcc不需要再引入依赖)  
 2）在seata_stock数据库创建一张冻结表，用于解决和记录空回滚、幂等性和悬挂问题
