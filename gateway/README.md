@@ -40,7 +40,7 @@ spring:
         prefix: ${spring.application.name}
 ```
 3）设置RouteDefinitionRepository（自动监听和刷新路由表）  
-4）设置GatewayApplication设置@EnableDiscoveryClient注册到nacos
+4）设置GatewayApplication设置@EnableDiscoveryClient注册到nacos  
 5）配置nacos的路由配置
 ```json
 [

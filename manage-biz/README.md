@@ -139,3 +139,32 @@ spring:
 3）在resources下面建立db/migration，写入sql文件
 > 注意：flyway的版本号命名规则，以V/U/R开头，后面接数字、点、下划线都可以，再接双下划线，再接描述。  
 > 比如：V1.0.1__init_test_table.sql，其中1.0.1是对应baseline-version: 1.0.0,init_test_table是描述
+
+## 九、redis集成
+1）引入子模块common-redis
+```xml
+<dependency>
+    <groupId>org.example</groupId>
+    <artifactId>common-redis</artifactId>
+    <version>${project.version}</version>
+</dependency>
+```
+2）在application.yml文件中配置redis服务器(manage-biz配置都在nacos，因此可以在nacos配置)
+```yaml
+spring:
+  # redis配置
+  redis:
+    database: 1
+    host: 127.0.0.1
+    port: 6379
+    password:
+    timeout: 30000
+    client-type: jedis
+    jedis:
+      pool:
+        max-active: 1000
+        max-idle: 100
+        min-idle: 0
+        maxWait: 1000
+```
+3）只需要直接使用RedisTemplate或者StringRedisTemplate即可，本实例使用TestRedisService和TestRedisController做演示  

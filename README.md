@@ -1,4 +1,5 @@
 # 1.脚手架
+**init**：本项目中所需的外部依赖的如nacos、mysql、redis等  
 **auth-authentication**：是一个最简单oauth2+spring security的授权服务器  
 **auth-github**：是一个基于oauth2使用github进行第三方授权认证登录  
 **auth-security**：是一个基于spring-security框架集成的登录认证  
@@ -11,12 +12,16 @@
 其中@SysLog是一个注解，主要是为了方便设置方法在日志打印的属性（可以根据项目调整）  
 &ensp;&ensp;4）**common-mybatis**：是一个集成mysql+mybatis-plus的公共包，里面配置了mybatis-plus的多租户插件、分页插件、防止全表更新与删除插件。
 其中通过配置ignoreTables或者在mapper中配置注解@InterceptorIgnore(tenantLine = "true")则可以忽略多住户    
-&ensp;&ensp;5）**common-swagger**：是一个集成swagger配置的公共包，里面配置swagger以及环境生效等内容  
+&ensp;&ensp;5）**common-redis**：是一个集成redis配置的公共包，里面配置redistemplate相关默认信息  
+&ensp;&ensp;6）**common-swagger**：是一个集成swagger配置的公共包，里面配置swagger以及环境生效等内容  
 **gateway**：微服务的网关，配置nacos实现动态配置网关功能  
 **IoT**：是一个访问EMQX的MQTT broker范例  
 **manage-biz**：是一个模拟业务的范例，里面实现了多环境配置（nacos）、国际化、日志logback、swagger、junit单元测试、数据库；引用common-log、common-mybatis、common-swagger等。  
 **manage-biz-api**：是一个抽离出来的访问第三方接口，使用openfeign进行访问（这是实践中常用的范例）  
 **seata-demo**：是一个分布式事务的demo工程
+
+> **注意：本案例中包括项目之外的资源，包括nacos、mysql、redis，其配置都包括在init子模块中**
+> 
 # 2.多模块配置
 现在spring-boot支持多模块，在比较大的项目中，多模块可以统一引用、解耦、解决代码重复问题。  
 配置多模块时，有几个点需要注意

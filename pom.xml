@@ -20,6 +20,9 @@
         <module>manage-biz-api</module>
         <module>business-biz</module>
         <module>seata-demo</module>
+        <module>TestDemo</module>
+        <module>redis-service</module>
+        <module>init</module>
     </modules>
 
     <properties>
@@ -41,6 +44,7 @@
         <druid.version>1.2.9</druid.version>
         <jjwt.version>0.9.0</jjwt.version>
         <flyway-core.vesion>6.5.7</flyway-core.vesion>
+        <commons-io.vesion>2.16.1</commons-io.vesion>
         <system.name>java后端脚手架</system.name>
     </properties>
 
@@ -123,6 +127,11 @@
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-core</artifactId>
                 <version>${flyway-core.vesion}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.vesion}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

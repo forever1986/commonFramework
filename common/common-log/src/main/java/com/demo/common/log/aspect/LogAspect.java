@@ -33,9 +33,11 @@ public class LogAspect {
             log.info("method:"+request.getMethod());
             log.info("class.method:" + joinPoint.getSignature().getDeclaringTypeName()+"."+joinPoint.getSignature().getName());
             log.info("args:" + joinPoint.getArgs());
-            log.info(" 模块编码:"+sysLog.module().getCode());
-            log.info(" 模块名称:"+sysLog.module().getName());
-            log.info(" 方法描述:"+sysLog.description());
+            if(sysLog!=null){
+                log.info(" 模块编码:"+sysLog.module().getCode());
+                log.info(" 模块名称:"+sysLog.module().getName());
+                log.info(" 方法描述:"+sysLog.description());
+            }
         }
         log.info("----------AOP日志end---------------");
     }
