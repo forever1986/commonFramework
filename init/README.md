@@ -138,6 +138,7 @@ tenant:
 ```
 # 2 mysql
 1.创建commonFramework数据库，并创建表t_user
+> 使用到此表的子模块：auth-authentication、auth-security、manage-biz
 ```roomsql
 CREATE TABLE `t_user` (
   `id` bigint NOT NULL AUTO_INCREMENT,
@@ -149,7 +150,40 @@ CREATE TABLE `t_user` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 ```
-2.其它数据库请参照各个子模块中的说明
+2.创建seata_ticket数据库，创建ticket_order表
+> 使用到此表的子模块：order-service-xa、order-service-tcc
+```roomsql
+-- seata_ticket.ticket_order definition
 
+CREATE TABLE `ticket_order` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `count` bigint NOT NULL COMMENT '数量',
+  `good` varchar(100) NOT NULL COMMENT '商品',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1841471491 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='订票订单';
+```
+3.创建seata_stock数据库，创建ticket_stock和ticket_stock_freeze表
+> 使用到此表的子模块：stock-service-xa、stock-service-tcc
+
+```roomsql
+-- seata_stock.ticket_stock definition
+CREATE TABLE `ticket_stock` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `good` varchar(100) NOT NULL COMMENT '商品',
+  `stock` bigint unsigned NOT NULL COMMENT '库存量',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='订票库存';
+
+-- seata_stock.ticket_stock_freeze definition
+CREATE TABLE `ticket_stock_freeze` (
+  `xid` varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '事务id',
+  `good` varchar(100) NOT NULL COMMENT '商品',
+  `freeze_stock` bigint unsigned NOT NULL COMMENT '冻结库存',
+  `state` int DEFAULT NULL COMMENT '事务状态，1:try，0:cancel',
+  PRIMARY KEY (`xid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='订票库存冻结表';
+
+```
 # 3 redis
 1.只需要安装一个本地redis数据库即可
+> 使用子模块：manage-biz

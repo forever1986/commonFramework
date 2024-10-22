@@ -13,7 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>stock-service-tcc</module>
-        <module>seata-order-tcc</module>
+        <module>order-service-tcc</module>
     </modules>
 
     <properties>

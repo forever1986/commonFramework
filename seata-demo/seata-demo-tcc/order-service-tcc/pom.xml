@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>seata-order-tcc</artifactId>
+    <artifactId>order-service-tcc</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

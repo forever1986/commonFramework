@@ -1,5 +1,5 @@
 # 1.脚手架
-**init**：本项目中所需的外部依赖的如nacos、mysql、redis等  
+**init**：本项目中所需的外部资源，如nacos、mysql、redis等  
 **auth-authentication**：是一个最简单oauth2+spring security的授权服务器  
 **auth-github**：是一个基于oauth2使用github进行第三方授权认证登录  
 **auth-security**：是一个基于spring-security框架集成的登录认证  
@@ -20,8 +20,9 @@
 **manage-biz-api**：是一个抽离出来的访问第三方接口，使用openfeign进行访问（这是实践中常用的范例）  
 **seata-demo**：是一个分布式事务的demo工程
 
-> **注意：本案例中包括项目之外的资源，包括nacos、mysql、redis，其配置都包括在init子模块中**
-> 
+> **_注意：本案例中包括项目之外的资源，包括nacos、mysql、redis，其配置都详细记录在init子模块中_**
+
+
 # 2.多模块配置
 现在spring-boot支持多模块，在比较大的项目中，多模块可以统一引用、解耦、解决代码重复问题。  
 配置多模块时，有几个点需要注意
@@ -41,38 +42,41 @@ spring cloud情况也和spring-boot一样
 # 3.其它功能
 
 ## 3.1 多环境情况（nacos方案）
-详情见manage-biz项目
+详情见manage-biz模块
 
 ## 3.2 Slf4j+logback+AOP集成统一日志
-详情见manage-biz项目+common-log项目
+详情见manage-biz项目+common-log模块
 
 ## 3.3 Swagger2集成
-详情见manage-swagger项目
+详情见manage-swagger模块
 
 ## 3.4 spring-boot的mysql使用druid连接池
-详情见manage-biz项目+common-mybatis项目
+详情见manage-biz模块+common-mybatis模块
 
 ## 3.5 JUnit测试用例集成
-详情见manage-biz项目
+详情见manage-biz模块
 
 ## 3.6 HandlerInterceptor拦截器统一入口认证
-详情见manage-biz项目
+详情见manage-biz模块
 
 ## 3.7 国际化
-详情见manage-biz项目
+详情见manage-biz模块
 
 ## 3.8 spring security集成（用户和权限控制）
-详情见auth-security项目
+详情见auth-security模块
 
 ## 3.9 oauth2（统一登录）
 ### oauth2授权服务器
-详情见auth-authentication项目
+详情见auth-authentication模块
 
 ### oauth2资源服务器
-详情见auth-resource项目
+详情见auth-resource模块
 
 ### oauth2客户端
 详情见auth-gihub模块
 
 ## 3.10 gateway集成nacos实现动态路由
-详情见gateway项目
+详情见gateway模块
+
+## 3.11 redis集成
+详情见common-redis和manage-biz模块
