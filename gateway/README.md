@@ -33,8 +33,12 @@ spring:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
+        username: nacos
+        password: nacos
       config:
         server-addr: 127.0.0.1:8848
+        username: nacos
+        password: nacos
         file-extension: yaml
         group: DEFAULT_GROUP
         prefix: ${spring.application.name}

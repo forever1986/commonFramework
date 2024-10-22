@@ -20,8 +20,7 @@
         <module>manage-biz-api</module>
         <module>business-biz</module>
         <module>seata-demo</module>
-        <module>TestDemo</module>
-        <module>redis-service</module>
+        <module>distributed-lock-service</module>
         <module>init</module>
     </modules>
 

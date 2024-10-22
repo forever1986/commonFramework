@@ -9,7 +9,8 @@
 4.在“权限管理”中绑定manage-biz角色与manage-biz命名空间的rw权限  
 ![img.png](readme-img/nacos权限.png)
 ## 1.2 新增配置文件
-1）在public命名空间下，新增一个gateway的配置
+1）在public命名空间下，新增一个gateway的配置：cloud-gateway-service（DEFAULT_GROUP分组）
+> 使用到此配置的子模块：gateway
 ```yaml
 [
   {
@@ -64,7 +65,8 @@
 ]
             
 ```
-2）在manage-biz新增3个不同cloud-manage-biz-service，其GROUP分别是dev、test和prod
+2）在manage-biz命名空间下新增3个不同cloud-manage-biz-service，其GROUP分别是dev、test和prod
+> 使用到此配置的子模块：manage-biz
 ```yaml
 logging:
   file:
@@ -124,7 +126,8 @@ spring:
           min-idle: 0
           maxWait: 1000
 ```
-3）在manage-biz新增3个不同common.yaml ，其GROUP分别是dev、test和prod
+3）在manage-biz命名空间下新增3个不同common.yaml ，其GROUP分别是dev、test和prod
+> 使用到此配置的子模块：manage-biz
 ```yaml
 lin:
   test: devdev  #不同环境这个地方修改不一样
