@@ -19,6 +19,7 @@
         <module>common-exception</module>
         <module>common-core</module>
         <module>common-redis</module>
+        <module>common-amqp</module>
     </modules>
 
 </project>

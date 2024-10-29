@@ -11,3 +11,42 @@ spring:
         namespace: manage-biz
         username: manage-biz
         password: manage-biz
+  # rabbitmq配置
+  rabbitmq:
+    addresses: 127.0.0.1:5672  # springboot配置rabbitmq地址
+    username: guest # springboot配置rabbitmq账号
+    password: guest # springboot配置rabbitmq密码
+    connection-timeout: 1000
+    listener:
+      simple:
+        concurrency: 1
+        max-concurrency: 5
+    senders:  # 本示例配置发送者信息
+      test-direct: test-direct
+      test-header: test-header
+      test-topic: test-topic
+      test-fanout: test-fanout
+    receivers: # 本示例配置消费者信息
+      test-direct-queue:
+        queueName: test-direct-queue  # 队列名称
+        exchange: test-direct  # 队列绑定交换机
+        exchangeType: DIRECT   # 交换机类型DIRECT、HEADER、TOPIC、FANOUT
+        routingKey: error, info  # routingKey，只有DIRECT和TOPIC有效
+        acknowledgeMode: MANUAL  # 手动还是自动确认
+      test-header-queue:
+        queueName: test-header-queue
+        exchange: test-header
+        exchangeType: HEADER
+        matchAll: true
+        headers:  # headers信息，只有HEADER有效
+          type: forqueue1
+      test-topic-queue:
+        queueName: test-topic-queue
+        exchange: test-topic
+        exchangeType: TOPIC
+        routingKey: good.*
+      test-fanout-queue:
+        queueName: test-fanout-queue
+        exchange: test-fanout
+        exchangeType: FANOUT
+
