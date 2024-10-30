@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.demo.common.amqp.config.RabbitmqConfig
+  com.demo.common.amqp.config.RabbitmqConfiguration

@@ -69,3 +69,70 @@ oss:
   bucket-name: works     # 默认的Bucket名称
 ```
 3）直接就可以使用OssEndpoint的接口操作oss
+
+# 3 MongoDB集成
+1）引入common-mongo子模块
+```xml
+<dependency>
+    <groupId>org.example</groupId>
+    <artifactId>common-mongo</artifactId>
+    <version>${project.version}</version>
+</dependency>
+```
+2）在yaml文件配置mongo：
+```yaml
+spring:
+  data:
+    mongodb:
+      database: commonFramework
+      host: 127.0.0.1
+      port: 27017
+      config:
+        minConnectionsPerHost: 5
+        maxConnectionsPerHost: 20
+```
+3）定义业务实体类Project，注意Document注解是为了对于mongo的collection
+```java
+@Data
+@Document(collection = "project")
+public class Project extends Base {
+    public static String PROJECT_ID = "projectId";
+
+    @Field
+    private Long projectId;
+
+    @Field
+    private String projectName;
+
+    @Field
+    private BigDecimal num;
+
+    @Field
+    private Person createPerson;
+
+    @Override
+    public Long getID() {
+        return projectId;
+    }
+}
+```
+4）定义业务ProjectDAO:
+```java
+@Repository
+public class ProjectDao extends BaseDAO<Project> {
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
+    public ProjectDao() {
+        ID = "projectId";  //对于业务实体的实际id
+        clazz = Project.class;
+    }
+
+    @Override
+    public MongoTemplate getMongoTemplate() {
+        return mongoTemplate;
+    }
+}
+```
+5）定义service和controller层进行测试

@@ -51,7 +51,18 @@ spring:
         queueName: test-fanout-queue
         exchange: test-fanout
         exchangeType: FANOUT
+  # mongoDB配置
+  data:
+    mongodb:
+      database: commonFramework
+      host: 127.0.0.1
+      port: 27017
+      config:
+        minConnectionsPerHost: 5
+        maxConnectionsPerHost: 20
 
+
+# 对象存储minIO
 oss:
   enabled: false  # 是否开启oss存储配置
   api: false  # 自动开启API接口
@@ -59,3 +70,5 @@ oss:
   access-key: minioadmin      # 访问密钥
   secret-key: minioadmin      # 密钥密码
   bucket-name: works     # 默认的Bucket名称
+
+

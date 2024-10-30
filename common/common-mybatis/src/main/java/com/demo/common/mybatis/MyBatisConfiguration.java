@@ -21,7 +21,7 @@ import java.util.Arrays;
 
 @Slf4j
 @Configuration
-public class MyBatisConfig {
+public class MyBatisConfiguration {
 
     @Value("${tenant.enable:false}")
     private Boolean tenantEnable; //是否开启多租户

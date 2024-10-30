@@ -21,6 +21,7 @@
         <module>common-redis</module>
         <module>common-amqp</module>
         <module>common-oss</module>
+        <module>common-mongo</module>
     </modules>
 
 </project>

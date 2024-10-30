@@ -44,6 +44,11 @@
             <artifactId>common-oss</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>common-mongo</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

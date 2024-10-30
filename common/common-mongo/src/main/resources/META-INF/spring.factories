@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.demo.common.mybatis.MyBatisConfiguration
+  com.demo.common.mongo.config.MongoConfiguration

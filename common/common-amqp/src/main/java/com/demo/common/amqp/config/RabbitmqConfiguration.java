@@ -27,14 +27,14 @@ import java.util.Map;
 @EnableRabbit
 @EnableConfigurationProperties(RabbitmqProperties.class)
 @Slf4j
-public class RabbitmqConfig {
+public class RabbitmqConfiguration {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
     private final RabbitmqProperties rabbitmqProperties;
 
-    public RabbitmqConfig(RabbitmqProperties rabbitmqProperties) {
+    public RabbitmqConfiguration(RabbitmqProperties rabbitmqProperties) {
         this.rabbitmqProperties = rabbitmqProperties;
     }
 
