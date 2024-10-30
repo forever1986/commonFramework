@@ -7,12 +7,14 @@ spring:
   cloud:
     nacos:
       discovery:
+        enabled: false
         server-addr: 127.0.0.1:8848 # nacos地址
         namespace: manage-biz
         username: manage-biz
         password: manage-biz
   # rabbitmq配置
   rabbitmq:
+    enabled: false  # 关闭rabbitMQ配置
     addresses: 127.0.0.1:5672  # springboot配置rabbitmq地址
     username: guest # springboot配置rabbitmq账号
     password: guest # springboot配置rabbitmq密码
@@ -50,3 +52,10 @@ spring:
         exchange: test-fanout
         exchangeType: FANOUT
 
+oss:
+  enabled: false  # 是否开启oss存储配置
+  api: false  # 自动开启API接口
+  endpoint: http://127.0.0.1:9005  # MinIO服务器的URL
+  access-key: minioadmin      # 访问密钥
+  secret-key: minioadmin      # 密钥密码
+  bucket-name: works     # 默认的Bucket名称

@@ -13,8 +13,9 @@
 其中@SysLog是一个注解，主要是为了方便设置方法在日志打印的属性（可以根据项目调整）  
 &ensp;&ensp;5）**common-mybatis**：是一个集成mysql+mybatis-plus的公共包，里面配置了mybatis-plus的多租户插件、分页插件、防止全表更新与删除插件。
 其中通过配置ignoreTables或者在mapper中配置注解@InterceptorIgnore(tenantLine = "true")则可以忽略多住户    
-&ensp;&ensp;6）**common-redis**：是一个集成redis配置的公共包，里面配置redistemplate相关默认信息  
-&ensp;&ensp;7）**common-swagger**：是一个集成swagger配置的公共包，里面配置swagger以及环境生效等内容  
+&ensp;&ensp;6）**common-oss**：是一个集成minIO对象存储的公共包，自动注册操作oss的API，其它子模块直接引用并配置yaml即可访问API
+&ensp;&ensp;7）**common-redis**：是一个集成redis配置的公共包，里面配置redistemplate相关默认信息  
+&ensp;&ensp;8）**common-swagger**：是一个集成swagger配置的公共包，里面配置swagger以及环境生效等内容  
 **gateway**：微服务的网关，配置nacos实现动态配置网关功能  
 **IoT**：是一个访问EMQX的MQTT broker范例  
 **manage-biz**：是一个模拟业务的范例，里面实现了多环境配置（nacos）、国际化、日志logback、swagger、junit单元测试、数据库；引用common-log、common-mybatis、common-swagger等。  

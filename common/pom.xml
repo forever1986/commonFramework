@@ -20,6 +20,7 @@
         <module>common-core</module>
         <module>common-redis</module>
         <module>common-amqp</module>
+        <module>common-oss</module>
     </modules>
 
 </project>

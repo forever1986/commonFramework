@@ -48,3 +48,24 @@ public void receive(TestMessage testMessage, Channel channel, @Header(AmqpHeader
     channel.basicAck(tag,true);
 }
 ```
+
+# 2 minIO对象存储集成
+1）引入common-oss子模块
+```xml
+<dependency>
+    <groupId>org.example</groupId>
+    <artifactId>common-oss</artifactId>
+    <version>${project.version}</version>
+</dependency>
+```
+2）在yaml文件配置以下信息
+```yaml
+oss:
+  enabled: true  # 是否开启oss存储配置
+  api: true  # 自动开启API接口
+  endpoint: http://127.0.0.1:9005  # MinIO服务器的URL
+  access-key: minioadmin      # 访问密钥
+  secret-key: minioadmin      # 密钥密码
+  bucket-name: works     # 默认的Bucket名称
+```
+3）直接就可以使用OssEndpoint的接口操作oss

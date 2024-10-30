@@ -44,6 +44,8 @@
         <jjwt.version>0.9.0</jjwt.version>
         <flyway-core.vesion>6.5.7</flyway-core.vesion>
         <commons-io.vesion>2.16.1</commons-io.vesion>
+        <minio.version>8.5.9</minio.version>
+        <okhttp.version>4.3.1</okhttp.version>
         <system.name>java后端脚手架</system.name>
     </properties>
 
@@ -132,6 +134,30 @@
                 <artifactId>commons-io</artifactId>
                 <version>${commons-io.vesion}</version>
             </dependency>
+            <dependency>
+                <groupId>io.minio</groupId>
+                <artifactId>minio</artifactId>
+                <version>${minio.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>${okhttp.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <!-- maven仓库 -->
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://maven.aliyun.com/repository/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 </project>

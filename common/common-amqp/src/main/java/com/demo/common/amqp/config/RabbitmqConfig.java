@@ -14,6 +14,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,6 +39,11 @@ public class RabbitmqConfig {
     }
 
     @Bean
+    @ConditionalOnProperty(
+            prefix = "spring.rabbitmq",
+            name = {"enabled"},
+            havingValue = "true"
+    )
     public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory) {
         return new RabbitAdmin(connectionFactory);
     }
@@ -47,6 +53,11 @@ public class RabbitmqConfig {
      * @return
      */
     @Bean
+    @ConditionalOnProperty(
+            prefix = "spring.rabbitmq",
+            name = {"enabled"},
+            havingValue = "true"
+    )
     public MessageConverter messageConverter() {
         Jackson2JsonMessageConverter jackson2JsonMessageConverter = new Jackson2JsonMessageConverter();
         jackson2JsonMessageConverter.setCreateMessageIds(true);
@@ -66,6 +77,11 @@ public class RabbitmqConfig {
      * 批量注册队列
      */
     @Bean
+    @ConditionalOnProperty(
+            prefix = "spring.rabbitmq",
+            name = {"enabled"},
+            havingValue = "true"
+    )
     public List<Queue> rabbitQueues(RabbitAdmin rabbitAdmin) {
         List<Queue> queues = new ArrayList<>();
 
@@ -86,6 +102,11 @@ public class RabbitmqConfig {
      * 批量绑定交换机与队列
      */
     @Bean
+    @ConditionalOnProperty(
+            prefix = "spring.rabbitmq",
+            name = {"enable"},
+            havingValue = "true"
+    )
     public List<Binding> bindings(RabbitAdmin rabbitAdmin, List<Queue> rabbitQueues) {
         List<Binding> bindings = new ArrayList<>();
         Map<String, QueueInfo> topics = rabbitmqProperties.getReceivers();
