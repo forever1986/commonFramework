@@ -11,7 +11,6 @@
     <modules>
         <module>gateway</module>
         <module>manage-biz</module>
-        <module>IoT</module>
         <module>auth-github</module>
         <module>common</module>
         <module>auth-security</module>
@@ -22,6 +21,7 @@
         <module>seata-demo</module>
         <module>distributed-lock-service</module>
         <module>init</module>
+        <module>IoT-biz</module>
     </modules>
 
     <properties>

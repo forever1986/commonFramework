@@ -18,7 +18,7 @@
 &ensp;&ensp;8）**common-redis**：是一个集成redis配置的公共包，里面配置redistemplate相关默认信息  
 &ensp;&ensp;9）**common-swagger**：是一个集成swagger配置的公共包，里面配置swagger以及环境生效等内容  
 **gateway**：微服务的网关，配置nacos实现动态配置网关功能  
-**IoT**：是一个访问EMQX的MQTT broker范例  
+**IoT-biz**：是一个访问EMQX的MQTT broker范例  
 **manage-biz**：是一个模拟业务的范例，里面实现了多环境配置（nacos）、国际化、日志logback、swagger、junit单元测试、数据库；引用common-log、common-mybatis、common-swagger等。  
 **manage-biz-api**：是一个抽离出来的访问第三方接口，使用openfeign进行访问（这是实践中常用的范例）  
 **seata-demo**：是一个分布式事务的demo工程
