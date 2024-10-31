@@ -8,18 +8,16 @@ import org.eclipse.paho.mqttv5.common.packet.MqttProperties;
 import java.nio.charset.StandardCharsets;
 
 
-public class Consumer {
+public class Consumer1 {
 
     private static final String BROKER_URL = "tcp://10.156.136.211:1883";
-    private static final String TOPIC = "demo/lin/data";
-    private static final String USER_NAME = "";
-    private static final String PASSWORD = "";
+
     MqttConnectionOptions options;
 
     private MqttClient consumerClient1;
 
     public static void main(String[] args) {
-        Consumer test = new Consumer();
+        Consumer1 test = new Consumer1();
         try {
             test.connectAndTest();
         } catch (MqttException e) {
@@ -34,8 +32,8 @@ public class Consumer {
             // 设置连接选项
             options = new MqttConnectionOptions();
             options.setCleanStart(false);
-            options.setUserName(USER_NAME);
-            options.setPassword(PASSWORD.getBytes(StandardCharsets.UTF_8));
+            options.setUserName(Constant.USER_NAME);
+            options.setPassword(Constant.PASSWORD.getBytes(StandardCharsets.UTF_8));
             options.setSessionExpiryInterval(60L);
             // 连接到MQTT代理服务器
             consumerClient1.connect(options);
@@ -62,11 +60,11 @@ public class Consumer {
                     System.out.println("Connected to MQTT broker: " + s);
                     // 订阅主题
                     try {
-                        consumerClient1.subscribe(TOPIC,1);
+                        consumerClient1.subscribe(Constant.SHARE_TOPIC,1);
                     } catch (MqttException e) {
                         throw new RuntimeException(e);
                     }
-                    System.out.println("Subscribed to topic: " + TOPIC);
+                    System.out.println("Subscribed to topic: " + Constant.SHARE_TOPIC);
                 }
 
                 @Override
@@ -79,11 +77,11 @@ public class Consumer {
             // 设置回调
             consumerClient1.setCallback(callback);
             // 取消订阅
-            consumerClient1.unsubscribe(TOPIC);
-            System.out.println("Unsubscribed from topic: " + TOPIC);
+            consumerClient1.unsubscribe(Constant.SHARE_TOPIC);
+            System.out.println("Unsubscribed from topic: " + Constant.SHARE_TOPIC);
             // 订阅主题
-            consumerClient1.subscribe(TOPIC,1);
-            System.out.println("Subscribed to topic: " + TOPIC);
+            consumerClient1.subscribe(Constant.SHARE_TOPIC,1);
+            System.out.println("Subscribed to topic: " + Constant.SHARE_TOPIC);
             //启动状态监控线程
             Thread statusMonitorThread = new Thread(this::monitorClientStatus);
             statusMonitorThread.start();
