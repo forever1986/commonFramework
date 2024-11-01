@@ -1,0 +1,9 @@
+lin:
+  test: devdev
+
+# 多租户配置
+tenant:
+  enable: true #多租户启动开关
+  headAttr: tenant-code #头信息的租户key
+  column: tenant_code #数据库租户列名
+  ignoreTables: #逗号拼接不用多租户的表名

@@ -8,9 +8,6 @@ my:
   project:
     name: local
 
-lin:
-  test: local-local
-
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -31,10 +28,32 @@ spring:
       poolPreparedStatements: false
       filters: stat,wall,slf4j
       connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000;socketTimeout=10000;connectTimeout=1200
+  # 配置flyway（数据库sql版本控制）
+  flyway:
+    # 开关，建议在prod环境关闭
+    enabled: true
+    #数据库存在表时，自动使用设置的基线版本（baseline-version），数据库不存在表时，即使设置了，也会从第一个版本开始执行，默认值为false
+    baseline-on-migrate: true
+    #基线版本号，baseline-on-migrate为true时小于等于此版本号的脚本不会执行，默认值为1
+    baseline-version: 1.0.0
+    #设置为false会删除指定schema下所有的表，生产环境务必禁用，spring中该参数默认是false，需要手动设置为true
+    clean-disabled: true
+    #sql脚本存放位置，允许设置多个location，用英文逗号分割，默认值为classpath:db/migration
+    locations: classpath:db/migration
+    #是否替换sql脚本中的占位符，占位符默认是${xxx},默认是替换，如果不需要替换，可以设置为false
+    placeholder-replacement: false
 
-# 多租户配置
-tenant:
-  enable: true #多租户启动开关
-  headAttr: tenant-code #头信息的租户key
-  column: tenant_code #数据库租户列名
-  ignoreTables: #逗号拼接不用多租户的表名
+  # redis配置
+  redis:
+    database: 1
+    host: 127.0.0.1
+    port: 6379
+    password:
+    timeout: 30000
+    client-type: lettuce
+    lettuce:
+      pool:
+        max-active: 1000
+        max-idle: 100
+        min-idle: 0
+        maxWait: 1000

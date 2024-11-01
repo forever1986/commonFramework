@@ -159,8 +159,8 @@ spring:
     port: 6379
     password:
     timeout: 30000
-    client-type: jedis
-    jedis:
+    client-type: lettuce
+    lettuce:
       pool:
         max-active: 1000
         max-idle: 100

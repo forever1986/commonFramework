@@ -46,6 +46,7 @@
         <commons-io.vesion>2.16.1</commons-io.vesion>
         <minio.version>8.5.9</minio.version>
         <okhttp.version>4.3.1</okhttp.version>
+        <commons-pool2.version>2.11.1</commons-pool2.version>
         <system.name>java后端脚手架</system.name>
     </properties>
 
@@ -144,6 +145,11 @@
                 <artifactId>okhttp</artifactId>
                 <version>${okhttp.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-pool2</artifactId>
+                <version>${commons-pool2.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -151,7 +157,7 @@
     <repositories>
         <repository>
             <id>central</id>
-            <url>https://maven.aliyun.com/repository/public</url>
+            <url>https://maven.aliyun.com/repository/central</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
