@@ -1,0 +1,19 @@
+server:
+  port: 9984
+spring:
+  application:
+    name: quartz-biz-service
+
+xxl:
+  job:
+    enable: true
+    accessToken:
+    admin:
+      addresses: http://127.0.0.1:8080/xxl-job-admin  # 调度中心地址
+    executor:
+      appname: xxl-job-executor-sample  # 执行管理器名称
+      address: ''
+      ip: ''
+      logpath: ./xxl-job/jobhandler  # 日志输出位置
+      logretentiondays: 30
+      port: 0
