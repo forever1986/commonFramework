@@ -192,61 +192,74 @@ INSERT INTO `ticket_stock`(good, stock) VALUES ('故宫门票', 10);
 ### 2.3.2 创建项目
 1）创建seata-demo子模块，在pom文件引入依赖：
 ```xml
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-web</artifactId>
-</dependency>
-<dependency>
-    <groupId>com.alibaba.cloud</groupId>
-    <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-</dependency>
-<!--openFeign-->
-<dependency>
-    <groupId>org.springframework.cloud</groupId>
-    <artifactId>spring-cloud-starter-openfeign</artifactId>
-    <exclusions>
-        <!-- 排除ribbon负载均衡，使用loadbalancer -->
-        <exclusion>
-            <artifactId>spring-cloud-netflix-ribbon</artifactId>
-            <groupId>org.springframework.cloud</groupId>
-        </exclusion>
-    </exclusions>
-</dependency>
-<!--负载均衡器-->
-<dependency>
-    <groupId>org.springframework.cloud</groupId>
-    <artifactId>spring-cloud-starter-loadbalancer</artifactId>
-</dependency>
-<dependency>
-    <groupId>mysql</groupId>
-    <artifactId>mysql-connector-java</artifactId>
-</dependency>
-<dependency>
-    <groupId>com.baomidou</groupId>
-    <artifactId>mybatis-plus-boot-starter</artifactId>
-</dependency>
-<!--引入 seata 依赖包-->
-<dependency>
-    <groupId>com.alibaba.cloud</groupId>
-    <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
-    <exclusions>
-        <!-- 排除掉seata-spring-boot-starter，因为cloud中引入版本过低 -->
-        <exclusion>
-            <artifactId>seata-spring-boot-starter</artifactId>
-            <groupId>io.seata</groupId>
-        </exclusion>
-    </exclusions>
-</dependency>
-<!-- 重新引入高版本的seata-spring-boot-starter,旧版本启动，即便不是AT模式，也需要有undo_log表 -->
-<dependency>
-    <groupId>io.seata</groupId>
-    <artifactId>seata-spring-boot-starter</artifactId>
-    <version>1.8.0</version>
-</dependency>
-<dependency>
-    <groupId>org.projectlombok</groupId>
-    <artifactId>lombok</artifactId>
-</dependency>
+<dependencies>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>com.alibaba.cloud</groupId>
+        <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+    </dependency>
+    <!--openFeign-->
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-openfeign</artifactId>
+        <exclusions>
+            <!-- 排除ribbon负载均衡，使用loadbalancer -->
+            <exclusion>
+                <artifactId>spring-cloud-netflix-ribbon</artifactId>
+                <groupId>org.springframework.cloud</groupId>
+            </exclusion>
+        </exclusions>
+    </dependency>
+    <!--负载均衡器-->
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>mybatis-plus-boot-starter</artifactId>
+    </dependency>
+    <!--引入 seata 依赖包-->
+    <dependency>
+        <groupId>com.alibaba.cloud</groupId>
+        <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
+        <exclusions>
+            <!-- 排除掉seata-spring-boot-starter，因为cloud中引入版本过低 -->
+            <exclusion>
+                <artifactId>seata-spring-boot-starter</artifactId>
+                <groupId>io.seata</groupId>
+            </exclusion>
+        </exclusions>
+    </dependency>
+    <!-- 重新引入高版本的seata-spring-boot-starter -->
+    <dependency>
+        <groupId>io.seata</groupId>
+        <artifactId>seata-spring-boot-starter</artifactId>
+        <version>1.8.0</version>
+        <exclusions>
+            <!-- 排除掉druid，使用druid-spring-boot-starter（主要是保持druid与整个项目版本一致） -->
+            <exclusion>
+                <artifactId>com.alibaba</artifactId>
+                <groupId>druid</groupId>
+            </exclusion>
+        </exclusions>
+    </dependency>
+    <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>druid-spring-boot-starter</artifactId>
+    </dependency>
+</dependencies>
 ```
 2）在seata-demo子模块下面创建xa子模块：seata-demo-xa
 2）在seata-demo-xa子模块下创建库存子模块，stock-service-xa子模块，在yaml文件中配置mysql、seata等配置。创建从mapper层到controller层，提供扣减和增加库存接口

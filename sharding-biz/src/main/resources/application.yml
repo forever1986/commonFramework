@@ -1,0 +1,47 @@
+server:
+  port: 9985
+spring:
+  application:
+    name: sharding-biz-service
+  # shardingsphere分库配置
+  shardingsphere:
+    datasource:
+      enabled: true
+      names: db0, db1  #起两个数据库别名
+      db0:  #数据库配置1
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/sharding_db0?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+        username: root
+        password: root
+      db1:  #数据库配置2
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/sharding_db1?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+        username: root
+        password: root
+    sharding:
+      tables:
+        # 表的配置
+        test_order:
+          # 真实表
+          actual-data-nodes: db$->{0..1}.test_order #所有的库和表的组合
+          # 增加ID生成
+          key-generator:
+            column: order_id    #需要生成的Id
+            type: SNOWFLAKE            #雪花算法生成
+          # 分库策略
+          databaseStrategy:
+            inline:
+              sharding-column: order_id
+              algorithm-expression: db$->{order_id % 2}   #按照order_id匹配需要落入的库
+             # 如果有做分表，则做分表处理，本案例中没有分表
+  #          tableStrategy:
+  #            inline:
+  #              sharding-column: order_id
+  #              algorithm-expression: orders_$->{order_id % 2}   #按照orderId匹配需要落入的表
+    props:
+      sql:
+        show: true
+  main:
+    allow-bean-definition-overriding: true

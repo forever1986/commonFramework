@@ -22,6 +22,8 @@
         <module>distributed-lock-service</module>
         <module>init</module>
         <module>IoT-biz</module>
+        <module>quartz-biz</module>
+        <module>sharding-biz</module>
     </modules>
 
     <properties>
@@ -47,6 +49,8 @@
         <minio.version>8.5.9</minio.version>
         <okhttp.version>4.3.1</okhttp.version>
         <commons-pool2.version>2.11.1</commons-pool2.version>
+        <xxl-job.version>2.3.0</xxl-job.version>
+        <sharding-jdbc.version>4.1.1</sharding-jdbc.version>
         <system.name>java后端脚手架</system.name>
     </properties>
 
@@ -149,6 +153,16 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-pool2</artifactId>
                 <version>${commons-pool2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.xuxueli</groupId>
+                <artifactId>xxl-job-core</artifactId>
+                <version>${xxl-job.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.shardingsphere</groupId>
+                <artifactId>sharding-jdbc-spring-boot-starter</artifactId>
+                <version>${sharding-jdbc.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

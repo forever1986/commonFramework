@@ -72,10 +72,21 @@
             <groupId>io.seata</groupId>
             <artifactId>seata-spring-boot-starter</artifactId>
             <version>1.8.0</version>
+            <exclusions>
+                <!-- 排除掉druid，使用druid-spring-boot-starter（主要是保持druid与整个项目版本一致） -->
+                <exclusion>
+                    <artifactId>com.alibaba</artifactId>
+                    <groupId>druid</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
         </dependency>
     </dependencies>
 

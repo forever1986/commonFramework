@@ -22,6 +22,7 @@
 **manage-biz**：是一个模拟业务的范例，里面实现了多环境配置（nacos）、国际化、日志logback、swagger、junit单元测试、数据库；引用common-log、common-mybatis、common-swagger等。  
 **manage-biz-api**：是一个抽离出来的访问第三方接口，使用openfeign进行访问（这是实践中常用的范例）  
 **seata-demo**：是一个分布式事务的demo工程
+**sharding-biz**：是一个基于shardingsphere实现的分库示例
 
 > **_注意：本案例中包括项目之外的资源，包括nacos、mysql、redis，其配置都详细记录在init子模块中_**
 
