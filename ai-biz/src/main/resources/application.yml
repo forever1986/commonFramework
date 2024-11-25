@@ -1,0 +1,14 @@
+server:
+  port: 9986
+spring:
+  application:
+    name: ai-biz-service
+
+  ai:
+    qwen:
+      api-key : 你的API-KEY(在阿里云的百炼平台申请一个)
+      chat:
+        options:
+          systeMessage : 你是一个问答小助手！
+          model : qwen-turbo
+          temperature : 0.7

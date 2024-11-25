@@ -1,5 +1,6 @@
 # 1.脚手架
 **init**：本项目中所需的外部资源，如nacos、mysql、redis等  
+**ai-biz**：集成阿里的通义千问模型，进行模型调用  
 **auth-authentication**：是一个最简单oauth2+spring security的授权服务器  
 **auth-github**：是一个基于oauth2使用github进行第三方授权认证登录  
 **auth-security**：是一个基于spring-security框架集成的登录认证  
